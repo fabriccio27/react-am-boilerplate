@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+// los hooks se usan con functional components
+// antes con functional components (stateless functional components) no podia manejar local state y lifecycle methods (componentDidMount etc)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+/* un hook es una funcion que me permite tocar el state o lifecycle method, y convertir un SFC en un FC */
 
-## Available Scripts
+/* que pasa si en useState paso un objeto? voy a seguir teniendo una sola funcion para modificar el state, pero cuando
+llame la funcion voy a reemplazar todo el objeto, no la propiedad a la que habia apuntado
+WORKAROUND:  el objeto que pase al setter tiene que usar el spread operator para conservar las props no modificadas
+AUN ASI, no se recomienda usar objetos usando esta metodologia
+ */
 
-In the project directory, you can run:
+/* 
+useEffect funciona como un reemplazo de ComponentDidMount o ComponentDidUpdate, ya que toma una funcion como argumento
+Dicha funcion se corre en el montaje del componente y en su actualizacion (de su state o de sus props)
+Cronologia:
+  llamo a ReactDOM.render con una instancia de Count, lo que va a hacer es llamar a Count con las props correspondientes
+  Count es llamada con las props correspondientes
+  React corre el return de Count para representar
+  despues de la representaicon, el efecto creado en useEffect corre
+Los efectos se pueden disparar condicionalmente
+*/
+/* tambien puedo configurar useEffect para que simule el comportamiento de componentDidUnmount. Para verlo voy a armar
+un component separado para la representacion de una nota */
 
-### `npm start`
+/* puedo recrear algo del comportamiento de redux usando useReducer */
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+//el reducer devuelve el state logrado y el objeto dispatch para despachar acciones
+//voy a modificar funciones para usar acciones con dispatch
