@@ -1,72 +1,39 @@
-import React, {useState, useEffect, useReducer} from "react";
+import React, {useEffect, useReducer} from "react";
 import notesReducer from "../reducers/notes";
 import NoteList from "./NoteList";
-import NoteForm from "./NoteForm";
+import AddNoteForm from "./AddNoteForm";
+import NotesContext from "../context/notes-context";
 
+/* para ver custon hook, ir a ver componente Note */
 
 const NoteApp = () =>{
     //si JSON.parse me tira error de que hay algo mal con la 1ra linea, limpio el localStorage con clear y deberia andar
     const [notes, dispatch] = useReducer(notesReducer, []); //el 2do arg es el state inicial
-    //const [notes, setNotes] = useState([]); 
-    
-    const [title, setTitle] = useState("");
-    const [body, setBody] = useState("");
-  
-    const addNote=(event)=>{
-      event.preventDefault();
-      dispatch({
-        type:"ADD_NOTE",
-        note:{
-          title,
-          body
-        }//el sacó title y body de note, los puso en el root del objeto
-      });
-      /* setNotes([
-        ...notes,
-        {
-          title,
-          body
-        }
-      ]); */
-      setTitle("");
-      setBody("");
-    };
-  
-    const removeNote=(title)=>{
-      dispatch({
-        type:"REMOVE_NOTE",
-        title
-      });
-      /* const filteredNotes = notes.filter(note=>{
-        return note.title!==title;
-      });
-      setNotes(filteredNotes); */
-    };
+    //const [notes, setNotes] = useState([]); useState usa por debajo useReducer, asi que si tengo uno en el componente principal, lo voy
+
     // EFECTOS -------------------------------------------------------
     useEffect(() => {
       console.log("loading from localStorage...");
       const notes =  JSON.parse(localStorage.getItem("notes"));
       if (notes){
         dispatch({type:"POPULATE_NOTES", notes})
-        //setNotes(localNotes);
       }
     },[]);
   
     useEffect(()=>{
-      console.log("useEffect ran because of notes changes.");
       localStorage.setItem("notes", JSON.stringify(notes));
     },[notes]);
   
     return(
-      <div>
+      /* en value pongo lo que quiero que los componentes hijos y nietos tengan acceso, como objeto
+      esto me va a eliminar la necesidad de pasarle manualmente las props a los componentes inferiores
+      en los componentes donde quiera usar lo que esta Provider, tengo que usar el hook useContext */
+      <NotesContext.Provider value={{notes, dispatch}}> 
         <h1>NoteApp</h1>
-        <NoteList notes={notes} removeNote={removeNote} />
-
-        <h2>Add note</h2>
-        <NoteForm title={title} body={body} addNote={addNote} setTitle={setTitle} setBody={setBody}/>
-        
+        <NoteList/>
+        <AddNoteForm />
           
-      </div>
+      </NotesContext.Provider>
     );
   };
   export default NoteApp;
